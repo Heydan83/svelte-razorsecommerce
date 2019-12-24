@@ -1,6 +1,8 @@
 <script>
-  // global store
+  // stores
   import products from "../stores/defaultProducts";
+  import globalStore from "../stores/globalStore";
+  import { addToCart } from "../stores/cart";
 
   // components
   import Loading from "../components/Loading.svelte";
@@ -17,7 +19,7 @@
 </script>
 
 <svelte:head>
-  <title>{!product ? "Single product" : product.title}</title>
+  <title>{!product ? 'Single product' : product.title}</title>
 </svelte:head>
 
 {#if !product}
@@ -35,7 +37,13 @@
         <h1>{product.title}</h1>
         <h2>${product.price}</h2>
         <p>{product.description}</p>
-        <button class="btn btn-primary btn-block" on:click={() => console.log("Add to cart")}>Add to cart</button>
+        <button
+          class="btn btn-primary btn-block"
+          on:click={() => {
+            addToCart(product);
+            globalStore.toggleItem('cart', true)}}>
+          Add to cart
+        </button>
       </article>
     </div>
   </section>
