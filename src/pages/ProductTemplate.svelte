@@ -1,6 +1,6 @@
 <script>
   // stores
-  import products from "../stores/defaultProducts";
+  import products from "../stores/products";
   import globalStore from "../stores/globalStore";
   import { addToCart } from "../stores/cart";
 

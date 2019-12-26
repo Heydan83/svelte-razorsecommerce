@@ -1,1 +1,87 @@
-<h1>welcome to login page</h1>
+<script>
+  import loginUser from "../strapi/loginUser";
+  import registerUser from "../strapi/registerUser";
+
+  let email = "";
+  let password = "";
+  let username = "default username";
+  let isMember = true;
+
+  $: isEmpty = !email || !password || !username;
+
+  // toggle member
+  function toggleMember() {
+    isMember = !isMember;
+    if (!isMember) {
+      username = '';
+    } else {
+      username = 'default userame';
+    }
+  }
+
+  // handle submit
+  async function handleSubmit() {
+    let user;
+
+    if (isMember) {
+      user = await loginUser({ email, password });
+    } else {
+      user = await registerUser({ username, email, password });
+    }
+
+    if (user) {
+
+    } else {
+
+    }
+  }
+</script>
+
+<section class="form">
+  <h2 class="section-title">
+    {#if isMember}Sign in{:else}Register{/if}
+  </h2>
+  <form class="login-form" on:submit|preventDefault={handleSubmit}>
+    <!-- single input -->
+    <div class="form-control">
+      <label for="email">Email</label>
+      <input type="email" id="email" bind:value={email} />
+    </div>
+    <!-- end of single input -->
+    <!-- single input -->
+    <div class="form-control">
+      <label for="password">Password</label>
+      <input type="password" id="password" bind:value={password} />
+    </div>
+    <!-- end of single input -->
+    {#if !isMember}
+      <!-- single input -->
+      <div class="form-control">
+        <label for="username">Username</label>
+        <input type="text" id="username" bind:value={username} />
+      </div>
+      <!-- end of single input -->
+    {/if}
+    {#if isEmpty}
+      <p class="form-empty">Please fill out all form fields</p>
+    {/if}
+    <button
+      type="submit"
+      class="btn btn-block btn-primary"
+      disabled={isEmpty}
+      class:disabled={isEmpty}>
+      Submit
+    </button>
+    {#if isMember}
+      <p class="register-link">
+        Need to register?
+        <button type="button" on:click={toggleMember}>Click here</button>
+      </p>
+    {:else}
+      <p class="register-link">
+        Already a member?
+        <button type="button" on:click={toggleMember}>Click here</button>
+      </p>
+    {/if}
+  </form>
+</section>
