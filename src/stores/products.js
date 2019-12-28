@@ -3,11 +3,11 @@ import url from "../strapi/URL";
 import getProducts from "../strapi/getProducts";
 
 const store = writable([], () => {
-  serProducts();
+  setProducts();
   return () => {};
 });
 
-async function serProducts() {
+async function setProducts() {
   let products = await getProducts();
   if (products) {
     products = flattenProducts(products);
@@ -22,8 +22,8 @@ async function serProducts() {
 // flatten products
 function flattenProducts(data) {
   return data.map(item => {
-    // let image = item.image.url;
-    let image = `${url}${item.image.url}`;
+    let image = item.image.url;
+    // let image = `${url}${item.image.url}`;
     return {...item, image};
   });
 }

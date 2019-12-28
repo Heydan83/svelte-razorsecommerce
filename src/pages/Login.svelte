@@ -1,26 +1,36 @@
 <script>
   import loginUser from "../strapi/loginUser";
   import registerUser from "../strapi/registerUser";
+  import { navigate } from "svelte-routing";
+  import globalStore from "../stores/globalStore";
 
   let email = "";
   let password = "";
   let username = "default username";
   let isMember = true;
 
-  $: isEmpty = !email || !password || !username;
+  // add alert
+
+  $: isEmpty = !email || !password || !username || $globalStore.alert;;
 
   // toggle member
   function toggleMember() {
     isMember = !isMember;
     if (!isMember) {
-      username = '';
+      username = "";
     } else {
-      username = 'default userame';
+      username = "default userame";
     }
   }
 
   // handle submit
   async function handleSubmit() {
+    globalStore.toggleItem(
+        "alert",
+        true,
+        "Loading data... please wait!"
+      );
+
     let user;
 
     if (isMember) {
@@ -30,10 +40,21 @@
     }
 
     if (user) {
-
-    } else {
-
+      navigate("/products");
+      globalStore.toggleItem(
+        "alert",
+        true,
+        "Welcome to shopping madness my friend!"
+      );
+      return;
     }
+
+    globalStore.toggleItem(
+      "alert",
+      true,
+      "There was an error! please try again",
+      true
+    );
   }
 </script>
 
