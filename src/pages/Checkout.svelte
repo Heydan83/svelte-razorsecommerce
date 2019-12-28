@@ -66,8 +66,8 @@
         globalStore.toggleItem(
           "alert",
           true,
-          true,
-          "there was an error with your order. Please try again"
+          "there was an error with your order. Please try again",
+          true
         );
       }
 
